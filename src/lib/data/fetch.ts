@@ -14,18 +14,34 @@ export const fetchStrapiClient = async (
   endpoint: string,
   params?: RequestInit
 ) => {
+  // Destructure "next" from params so that it doesn't get passed to native fetch,
+  // and clean any "next" property from nested headers if present
+  const { next, ...otherParams } = params || {}
+  if (
+    otherParams.headers &&
+    !(otherParams.headers instanceof Headers) &&
+    !Array.isArray(otherParams.headers)
+  ) {
+    const cleanHeaders = { ...otherParams.headers } as Record<string, any>
+    delete cleanHeaders.next
+    otherParams.headers = cleanHeaders
+  }
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_STRAPI_URL}${endpoint}`,
     {
+      ...otherParams,
       headers: {
         Authorization: `Bearer ${process.env.NEXT_PUBLIC_STRAPI_READ_TOKEN}`,
+        ...(otherParams.headers || {}),
       },
-      ...params,
     }
   )
 
   if (!response.ok) {
-    throw new Error('Failed to fetch data')
+    const errorText = await response.text()
+    throw new Error(
+      `Failed to fetch data (status ${response.status}): ${errorText}`
+    )
   }
 
   return response
@@ -55,7 +71,14 @@ export const getMidBannerData = async (): Promise<MidBannerData> => {
 }
 
 export const getCollectionsData = async (): Promise<CollectionsData> => {
-  const res = await fetchStrapiClient(`/api/collections?&populate=*`, {
+  console.log('NEXT_PUBLIC_STRAPI_URL:', process.env.NEXT_PUBLIC_STRAPI_URL)
+  console.log(
+    'NEXT_PUBLIC_STRAPI_READ_TOKEN:',
+    process.env.NEXT_PUBLIC_STRAPI_READ_TOKEN
+  )
+  const url = `/api/collections`
+  console.log('Fetching URL:', url)
+  const res = await fetchStrapiClient(url, {
     next: { tags: ['collections-main'] },
   })
 
