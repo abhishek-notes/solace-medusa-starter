@@ -15,7 +15,7 @@ const PaymentDetails = ({ order }: PaymentDetailsProps) => {
       <Box className="p-4">
         <Text size="large">Delivery method</Text>
         <Text size="base" className="text-secondary">
-          {order.shipping_methods[0].name}
+          {order.shipping_methods && order.shipping_methods.length > 0 ? order.shipping_methods[0].name : 'No shipping method found'}
         </Text>
       </Box>
 

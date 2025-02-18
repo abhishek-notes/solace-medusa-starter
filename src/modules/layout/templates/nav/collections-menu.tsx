@@ -44,7 +44,7 @@ export default function CollectionsMenu({
           key={id}
           title={element.Title}
           handle={element.Handle}
-          imgSrc={element.Image.url}
+          imgSrc={element.Image?.url || ''}
           description={element.Description}
         />
       ))}

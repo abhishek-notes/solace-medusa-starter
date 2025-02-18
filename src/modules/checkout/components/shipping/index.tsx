@@ -152,7 +152,7 @@ const Shipping: React.FC<ShippingProps> = ({
             className="mt-6"
             onClick={handleSubmit}
             isLoading={isLoading}
-            disabled={!cart.shipping_methods?.[0]}
+            disabled={false}
             data-testid="submit-delivery-option-button"
           >
             Proceed to payment

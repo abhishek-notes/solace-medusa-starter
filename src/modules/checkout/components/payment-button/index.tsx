@@ -51,7 +51,7 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
       )
     case isManual(paymentSession?.provider_id):
       return (
-        <ManualTestPaymentButton notReady={notReady} data-testid={dataTestId} />
+        <ManualTestPaymentButton notReady={false} data-testid={dataTestId} />
       )
     case isPaypal(paymentSession?.provider_id):
       return (
@@ -313,7 +313,7 @@ const ManualTestPaymentButton = ({ notReady }: { notReady: boolean }) => {
   return (
     <>
       <Button
-        disabled={notReady}
+        disabled={false}
         isLoading={submitting}
         onClick={handlePayment}
         data-testid="submit-order-button"
