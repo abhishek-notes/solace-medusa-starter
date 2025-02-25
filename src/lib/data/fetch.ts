@@ -137,7 +137,8 @@ export const getContentPage = async (
   type: string,
   tag: string
 ): Promise<ContentPageData> => {
-  const res = await fetchStrapiClient(`/api/${type}`, {
+  const encodedType = encodeURIComponent(type)
+  const res = await fetchStrapiClient(`/api/${encodedType}`, {
     next: { tags: [tag] },
   })
 
@@ -159,11 +160,11 @@ export const getBlogPosts = async ({
   let urlWithFilters = baseUrl
 
   if (query) {
-    urlWithFilters += `&filters[Title][$contains]=${query}`
+    urlWithFilters += `&filters[Title][$contains]=${encodeURIComponent(query)}`
   }
 
   if (category) {
-    urlWithFilters += `&filters[Categories][Slug][$eq]=${category}`
+    urlWithFilters += `&filters[Categories][Slug][$eq]=${encodeURIComponent(category)}`
   }
 
   const res = await fetchStrapiClient(urlWithFilters, {
@@ -188,9 +189,13 @@ export const getBlogPostCategories = async (): Promise<BlogData> => {
 export const getBlogPostBySlug = async (
   slug: string
 ): Promise<BlogPost | null> => {
-  const res = await fetchStrapiClient(`/api/blogs?filters[Slug][$eq]=${slug}`, {
-    next: { tags: [`blog-${slug}`] },
-  })
+  const encodedSlug = encodeURIComponent(slug)
+  const res = await fetchStrapiClient(
+    `/api/blogs?filters[Slug][$eq]=${encodedSlug}`,
+    {
+      next: { tags: [`blog-${slug}`] },
+    }
+  )
 
   const data = await res.json()
 
