@@ -14,6 +14,9 @@ export const fetchStrapiClient = async (
   endpoint: string,
   params?: RequestInit
 ) => {
+  // Remove trailing slash from the base URL, if present.
+  const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL.replace(/\/$/, '')
+
   // Destructure "next" from params so that it doesn't get passed to native fetch,
   // and clean any "next" property from nested headers if present
   const { next, ...otherParams } = params || {}
@@ -26,16 +29,13 @@ export const fetchStrapiClient = async (
     delete cleanHeaders.next
     otherParams.headers = cleanHeaders
   }
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_STRAPI_URL}${endpoint}`,
-    {
-      ...otherParams,
-      headers: {
-        Authorization: `Bearer ${process.env.NEXT_PUBLIC_STRAPI_READ_TOKEN}`,
-        ...(otherParams.headers || {}),
-      },
-    }
-  )
+  const response = await fetch(`${baseUrl}${endpoint}`, {
+    ...otherParams,
+    headers: {
+      Authorization: `Bearer ${process.env.NEXT_PUBLIC_STRAPI_READ_TOKEN}`,
+      ...(otherParams.headers || {}),
+    },
+  })
 
   if (!response.ok) {
     const errorText = await response.text()
