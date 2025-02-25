@@ -137,7 +137,7 @@ export const getContentPage = async (
   type: string,
   tag: string
 ): Promise<ContentPageData> => {
-  const res = await fetchStrapiClient(`/api/${type}?populate=*`, {
+  const res = await fetchStrapiClient(`/api/${type}`, {
     next: { tags: [tag] },
   })
 
@@ -188,12 +188,9 @@ export const getBlogPostCategories = async (): Promise<BlogData> => {
 export const getBlogPostBySlug = async (
   slug: string
 ): Promise<BlogPost | null> => {
-  const res = await fetchStrapiClient(
-    `/api/blogs?filters[Slug][$eq]=${slug}&populate=*`,
-    {
-      next: { tags: [`blog-${slug}`] },
-    }
-  )
+  const res = await fetchStrapiClient(`/api/blogs?filters[Slug][$eq]=${slug}`, {
+    next: { tags: [`blog-${slug}`] },
+  })
 
   const data = await res.json()
 
@@ -205,7 +202,7 @@ export const getBlogPostBySlug = async (
 }
 
 export const getAllBlogSlugs = async (): Promise<string[]> => {
-  const res = await fetchStrapiClient(`/api/blogs?populate=*`, {
+  const res = await fetchStrapiClient(`/api/blogs`, {
     next: { tags: ['blog-slugs'] },
   })
 
