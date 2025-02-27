@@ -9,6 +9,10 @@ const nextConfig = {
             {
                 protocol: 'https',
                 hostname: 'palladio-store-strapi-production.up.railway.app'
+            },
+            {
+                protocol: 'https',
+                hostname: 'strapi-palladio-production.up.railway.app'
             }
         ]
     },
