@@ -47,17 +47,50 @@ export const fetchStrapiClient = async (
   return response
 }
 
+// Helper to transform relative image URLs to absolute URLs.
+const fixImageUrls = (data: any): any => {
+  if (Array.isArray(data)) {
+    return data.map(fixImageUrls)
+  } else if (typeof data === 'object' && data !== null) {
+    // If object has a property 'url' that's a relative path, fix it.
+    if (
+      'url' in data &&
+      typeof data.url === 'string' &&
+      data.url.startsWith('/uploads')
+    ) {
+      data.url =
+        process.env.NEXT_PUBLIC_STRAPI_URL.replace(/\/$/, '') + data.url
+    }
+    for (const key in data) {
+      data[key] = fixImageUrls(data[key])
+    }
+  }
+  return data
+}
+
 // Homepage data
 export const getHeroBannerData = async (): Promise<HeroBannerData> => {
   const url = `${process.env.NEXT_PUBLIC_STRAPI_URL.replace(/\/$/, '')}/api/homepage?populate[1]=HeroBanner&populate[2]=HeroBanner.CTA&populate[3]=HeroBanner.Image`
   const res = await fetchStrapiClient(url, { next: { tags: ['hero-banner'] } })
-  return res.json()
+  const data = await res.json()
+
+  // Specific patch for hero banner image in case not caught by generic fix
+  if (data?.data?.attributes?.HeroBanner?.Image?.data?.attributes?.url) {
+    const imageUrl = data.data.attributes.HeroBanner.Image.data.attributes.url
+    if (imageUrl.startsWith('/')) {
+      data.data.attributes.HeroBanner.Image.data.attributes.url =
+        process.env.NEXT_PUBLIC_STRAPI_URL.replace(/\/$/, '') + imageUrl
+    }
+  }
+
+  return fixImageUrls(data)
 }
 
 export const getMidBannerData = async (): Promise<MidBannerData> => {
   const url = `${process.env.NEXT_PUBLIC_STRAPI_URL.replace(/\/$/, '')}/api/homepage?populate[1]=MidBanner&populate[2]=MidBanner.CTA&populate[3]=MidBanner.Image`
   const res = await fetchStrapiClient(url, { next: { tags: ['mid-banner'] } })
-  return res.json()
+  const data = await res.json()
+  return fixImageUrls(data)
 }
 
 export const getCollectionsData = async (): Promise<CollectionsData> => {
@@ -65,13 +98,15 @@ export const getCollectionsData = async (): Promise<CollectionsData> => {
   const res = await fetchStrapiClient(url, {
     next: { tags: ['collections-main'] },
   })
-  return res.json()
+  const data = await res.json()
+  return fixImageUrls(data)
 }
 
 export const getExploreBlogData = async (): Promise<BlogData> => {
   const url = `${process.env.NEXT_PUBLIC_STRAPI_URL.replace(/\/$/, '')}/api/blogs?populate[1]=FeaturedImage&sort=createdAt:desc&pagination[start]=0&pagination[limit]=3`
   const res = await fetchStrapiClient(url, { next: { tags: ['explore-blog'] } })
-  return res.json()
+  const data = await res.json()
+  return fixImageUrls(data)
 }
 
 // Products
@@ -80,21 +115,24 @@ export const getProductVariantsColors = async (): Promise<VariantColorData> => {
   const res = await fetchStrapiClient(url, {
     next: { tags: ['variants-colors'] },
   })
-  return res.json()
+  const data = await res.json()
+  return fixImageUrls(data)
 }
 
 // About Us
 export const getAboutUs = async (): Promise<AboutUsData> => {
   const url = `${process.env.NEXT_PUBLIC_STRAPI_URL.replace(/\/$/, '')}/api/about-us?populate[1]=Banner&populate[2]=OurStory.Image&populate[3]=OurCraftsmanship.Image&populate[4]=WhyUs.Tile.Image&populate[5]=Numbers`
   const res = await fetchStrapiClient(url, { next: { tags: ['about-us'] } })
-  return res.json()
+  const data = await res.json()
+  return fixImageUrls(data)
 }
 
 // FAQ
 export const getFAQ = async (): Promise<FAQData> => {
   const url = `${process.env.NEXT_PUBLIC_STRAPI_URL.replace(/\/$/, '')}/api/faq?populate[1]=FAQSection&populate[2]=FAQSection.Question`
   const res = await fetchStrapiClient(url, { next: { tags: ['faq'] } })
-  return res.json()
+  const data = await res.json()
+  return fixImageUrls(data)
 }
 
 // Content Page
@@ -105,7 +143,8 @@ export const getContentPage = async (
   const encodedType = encodeURIComponent(type)
   const url = `${process.env.NEXT_PUBLIC_STRAPI_URL.replace(/\/$/, '')}/api/${encodedType}`
   const res = await fetchStrapiClient(url, { next: { tags: [tag] } })
-  return res.json()
+  const data = await res.json()
+  return fixImageUrls(data)
 }
 
 // Blog
@@ -128,7 +167,8 @@ export const getBlogPosts = async ({
   const res = await fetchStrapiClient(urlWithFilters, {
     next: { tags: ['blog'] },
   })
-  return res.json()
+  const data = await res.json()
+  return fixImageUrls(data)
 }
 
 export const getBlogPostCategories = async (): Promise<BlogData> => {
@@ -136,7 +176,8 @@ export const getBlogPostCategories = async (): Promise<BlogData> => {
   const res = await fetchStrapiClient(url, {
     next: { tags: ['blog-categories'] },
   })
-  return res.json()
+  const data = await res.json()
+  return fixImageUrls(data)
 }
 
 export const getBlogPostBySlug = async (
@@ -146,8 +187,9 @@ export const getBlogPostBySlug = async (
   const url = `${process.env.NEXT_PUBLIC_STRAPI_URL.replace(/\/$/, '')}/api/blogs?filters[Slug][$eq]=${encodedSlug}`
   const res = await fetchStrapiClient(url, { next: { tags: [`blog-${slug}`] } })
   const data = await res.json()
-  if (data.data && data.data.length > 0) {
-    return data.data[0]
+  const fixedData = fixImageUrls(data)
+  if (fixedData.data && fixedData.data.length > 0) {
+    return fixedData.data[0]
   }
   return null
 }
