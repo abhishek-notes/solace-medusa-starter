@@ -13,6 +13,34 @@ const nextConfig = {
             {
                 protocol: 'https',
                 hostname: 'strapi-palladio-production.up.railway.app'
+            },
+            {
+                protocol: 'https',
+                hostname: 'bucket-production-3bbd.up.railway.app'
+            },
+            {
+                protocol: 'https',
+                hostname: 'medusa-public-images.s3.eu-west-1.amazonaws.com'
+            },
+           {
+                protocol: 'http',
+                hostname: 'localhost:9000',
+            },
+             {
+                protocol: 'https',
+                hostname: 'localhost:9000',
+            },
+            {
+                protocol: 'https',
+                hostname: 'strapi-palladio-production.up.railway.app',
+            },
+             {
+                protocol: 'http',
+                hostname: 'strapi-palladio-production.up.railway.app',
+            },
+            {
+                protocol: 'http',
+                hostname: 'localhost:9000',
             }
         ]
     },

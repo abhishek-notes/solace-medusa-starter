@@ -18,8 +18,8 @@ export const Banner = ({ data }: { data: HeroBanner }) => {
           src={bannerImage.url}
           alt={bannerImage.alternativeText ?? 'Banner image'}
           layout="fill"
-          objectFit="cover"
-          className="object-right-top"
+          className="object-cover object-right-top"
+          fill
         />
 
         <div className="absolute inset-0 flex flex-col items-center justify-center px-10 text-center text-white">

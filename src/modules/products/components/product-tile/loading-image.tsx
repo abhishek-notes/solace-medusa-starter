@@ -36,6 +36,9 @@ export const LoadingImage = ({
         priority={priority}
         loading={loading}
         onLoad={() => setIsLoading(false)}
+        style={{
+          objectFit: 'cover'
+        }}
       />
     </div>
   )

@@ -44,7 +44,7 @@ export default function CollectionsMenu({
           key={id}
           title={element.Title}
           handle={element.Handle}
-          imgSrc={element.Image?.url || ''}
+          imgSrc={element.Image?.url}
           description={element.Description}
         />
       ))}
@@ -65,13 +65,17 @@ const CollectionTile = ({
 }) => {
   return (
     <Box className="group relative max-h-[282px]">
-      <Image
-        src={imgSrc}
-        alt={`${title} collection image`}
-        width={600}
-        height={300}
-        className="h-full w-full object-cover object-center"
-      />
+      {imgSrc && (
+        <Image
+          src={imgSrc}
+          alt={`${title} collection image`}
+          width={600}
+          height={300}
+          fill
+          className="h-full w-full object-cover object-center"
+          objectFit="cover"
+        />
+      )}
       <Box className="absolute left-0 top-0 flex h-full w-full flex-col p-10">
         <Button
           asChild
