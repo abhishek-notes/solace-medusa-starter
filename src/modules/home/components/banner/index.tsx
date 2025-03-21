@@ -1,5 +1,6 @@
 import Image from 'next/image'
 
+import { processImageUrl } from '@lib/util/image-url'
 import { Box } from '@modules/common/components/box'
 import { Button } from '@modules/common/components/button'
 import { Container } from '@modules/common/components/container'
@@ -11,11 +12,16 @@ import { HeroBanner } from 'types/strapi'
 export const Banner = ({ data }: { data: HeroBanner }) => {
   const { Image: bannerImage, CTA, Headline, Text: text } = data
 
+  if (!bannerImage || !bannerImage.url) {
+    console.warn('Banner image is missing or invalid')
+    return null
+  }
+
   return (
     <Container>
       <Box className="relative h-[440px] medium:h-[478]">
         <Image
-          src={bannerImage.url}
+          src={processImageUrl(bannerImage.url)}
           alt={bannerImage.alternativeText ?? 'Banner image'}
           className="object-cover object-right-top"
           fill

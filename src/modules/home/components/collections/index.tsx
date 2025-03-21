@@ -3,6 +3,7 @@
 import { useMemo } from 'react'
 
 import { cn } from '@lib/util/cn'
+import { processImageUrl } from '@lib/util/image-url'
 import { StoreCollection } from '@medusajs/types'
 import { Box } from '@modules/common/components/box'
 import { Button } from '@modules/common/components/button'
@@ -16,18 +17,18 @@ import { CollectionsData } from 'types/strapi'
 const CollectionImage = ({ src, alt }: { src: string; alt: string }) => {
   if (!src) {
     return (
-      <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+      <div className="flex h-full w-full items-center justify-center bg-gray-200">
         <p className="text-gray-500">No Image</p>
       </div>
     )
   }
 
   return (
-    <div className="relative w-full h-full">
+    <div className="relative h-full w-full">
       <img
         src={src}
         alt={alt}
-        className="absolute inset-0 w-full h-full object-cover"
+        className="absolute inset-0 h-full w-full object-cover"
         loading="lazy"
       />
     </div>
@@ -55,12 +56,11 @@ const CollectionTile = ({
     Image Source Validity: ${!!imgSrc}
   `)
 
-  // Ensure the image URL is absolute
-  const absoluteImgSrc = imgSrc?.startsWith('http') 
-    ? imgSrc 
-    : imgSrc 
-      ? `https://bucket-production-3bbd.up.railway.app/medusa-bucket/medusa-bucket/${imgSrc.split('/').pop()}`
-      : '/placeholder-image.jpg'
+  // Use the shared image URL processing utility
+  const absoluteImgSrc = useMemo(() => {
+    console.log(`Processing image URL: ${imgSrc}`)
+    return processImageUrl(imgSrc)
+  }, [imgSrc])
 
   return (
     <Box
@@ -69,7 +69,10 @@ const CollectionTile = ({
       })}
     >
       <div className="relative aspect-video w-full overflow-hidden">
-        <CollectionImage src={absoluteImgSrc} alt={`${title} collection image`} />
+        <CollectionImage
+          src={absoluteImgSrc}
+          alt={`${title} collection image`}
+        />
       </div>
       <Box className="absolute left-0 top-0 hidden h-full w-full flex-col p-6 small:flex large:p-10">
         <Button
