@@ -3,6 +3,7 @@
 import { useMemo } from 'react'
 import Image from 'next/image'
 
+import { processImageUrl } from '@lib/util/image-url'
 import { StoreCollection } from '@medusajs/types'
 import { Box } from '@modules/common/components/box'
 import { Button } from '@modules/common/components/button'
@@ -65,16 +66,14 @@ const CollectionTile = ({
 }) => {
   return (
     <Box className="group relative max-h-[282px]">
-      {imgSrc ? (
-        <Image
-          src={imgSrc}
-          alt={`${title} collection image`}
-          fill
-          className="h-full w-full object-cover object-center"
-        />
-      ) : (
-        <div className="h-full w-full bg-gray-200 flex items-center justify-center">
-          <p className="text-gray-500">No Image</p>
+      {imgSrc && (
+        <div className="relative h-full w-full">
+          <Image
+            src={processImageUrl(imgSrc)}
+            alt={`${title} collection image`}
+            fill
+            className="h-full w-full object-cover object-center"
+          />
         </div>
       )}
       <Box className="absolute left-0 top-0 flex h-full w-full flex-col p-10">

@@ -1,7 +1,9 @@
+'use client'
+
 import { useMemo } from 'react'
-import Image from 'next/image'
 
 import { cn } from '@lib/util/cn'
+import { processImageUrl } from '@lib/util/image-url'
 import { StoreCollection } from '@medusajs/types'
 import { Box } from '@modules/common/components/box'
 import { Button } from '@modules/common/components/button'
@@ -10,6 +12,28 @@ import { Heading } from '@modules/common/components/heading'
 import LocalizedClientLink from '@modules/common/components/localized-client-link'
 import { Text } from '@modules/common/components/text'
 import { CollectionsData } from 'types/strapi'
+
+// Simple image component with standard img tag
+const CollectionImage = ({ src, alt }: { src: string; alt: string }) => {
+  if (!src) {
+    return (
+      <div className="flex h-full w-full items-center justify-center bg-gray-200">
+        <p className="text-gray-500">No Image</p>
+      </div>
+    )
+  }
+
+  return (
+    <div className="relative h-full w-full">
+      <img
+        src={src}
+        alt={alt}
+        className="absolute inset-0 h-full w-full object-cover"
+        loading="lazy"
+      />
+    </div>
+  )
+}
 
 const CollectionTile = ({
   title,
@@ -24,27 +48,32 @@ const CollectionTile = ({
   description: string
   id: number
 }) => {
+  console.log(`Collection Tile Debug:
+    Title: ${title}
+    Handle: ${handle}
+    Image Source: ${imgSrc}
+    Image Source Type: ${typeof imgSrc}
+    Image Source Validity: ${!!imgSrc}
+  `)
+
+  // Use the shared image URL processing utility
+  const absoluteImgSrc = useMemo(() => {
+    console.log(`Processing image URL: ${imgSrc}`)
+    return processImageUrl(imgSrc)
+  }, [imgSrc])
+
   return (
     <Box
       className={cn('group relative', {
         'small:col-start-2 small:row-start-1 small:row-end-3': id === 2,
       })}
     >
-      {imgSrc ? (
-        <Image
-          src={imgSrc}
+      <div className="relative aspect-video w-full overflow-hidden">
+        <CollectionImage
+          src={absoluteImgSrc}
           alt={`${title} collection image`}
-          width={600}
-          height={300}
-          loading="lazy"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          className="h-full w-full object-cover object-center"
         />
-      ) : (
-        <div className="h-full w-full bg-gray-200 flex items-center justify-center">
-          <p className="text-gray-500">No Image</p>
-        </div>
-      )}
+      </div>
       <Box className="absolute left-0 top-0 hidden h-full w-full flex-col p-6 small:flex large:p-10">
         <Button
           asChild
