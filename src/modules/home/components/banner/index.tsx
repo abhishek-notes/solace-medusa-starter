@@ -17,7 +17,6 @@ export const Banner = ({ data }: { data: HeroBanner }) => {
         <Image
           src={bannerImage.url}
           alt={bannerImage.alternativeText ?? 'Banner image'}
-          layout="fill"
           className="object-cover object-right-top"
           fill
         />

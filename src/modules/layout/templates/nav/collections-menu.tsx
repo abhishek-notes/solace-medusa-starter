@@ -69,11 +69,8 @@ const CollectionTile = ({
         <Image
           src={imgSrc}
           alt={`${title} collection image`}
-          width={600}
-          height={300}
           fill
           className="h-full w-full object-cover object-center"
-          objectFit="cover"
         />
       )}
       <Box className="absolute left-0 top-0 flex h-full w-full flex-col p-10">
