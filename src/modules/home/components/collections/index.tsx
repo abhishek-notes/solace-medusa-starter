@@ -30,15 +30,21 @@ const CollectionTile = ({
         'small:col-start-2 small:row-start-1 small:row-end-3': id === 2,
       })}
     >
-      <Image
-        src={imgSrc}
-        alt={`${title} collection image`}
-        width={600}
-        height={300}
-        loading="lazy"
-        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        className="h-full w-full object-cover object-center"
-      />
+      {imgSrc ? (
+        <Image
+          src={imgSrc}
+          alt={`${title} collection image`}
+          width={600}
+          height={300}
+          loading="lazy"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          className="h-full w-full object-cover object-center"
+        />
+      ) : (
+        <div className="h-full w-full bg-gray-200 flex items-center justify-center">
+          <p className="text-gray-500">No Image</p>
+        </div>
+      )}
       <Box className="absolute left-0 top-0 hidden h-full w-full flex-col p-6 small:flex large:p-10">
         <Button
           asChild
