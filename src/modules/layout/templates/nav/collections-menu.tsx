@@ -65,7 +65,7 @@ const CollectionTile = ({
   imgSrc: string
 }) => {
   return (
-    <Box className="group relative max-h-[282px]">
+    <Box className="group relative h-[282px] max-h-[282px]">
       {imgSrc && (
         <div className="relative h-full w-full">
           <Image
@@ -73,6 +73,8 @@ const CollectionTile = ({
             alt={`${title} collection image`}
             fill
             className="h-full w-full object-cover object-center"
+            sizes="(max-width: 768px) 100vw, 33vw"
+            priority
           />
         </div>
       )}

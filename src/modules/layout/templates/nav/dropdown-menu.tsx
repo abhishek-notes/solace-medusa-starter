@@ -95,7 +95,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
           className={cn(
             'absolute left-0 top-full z-50 w-full translate-y-0 bg-primary shadow-lg transition-all duration-300',
             isOpen
-              ? 'pointer-events-auto opacity-100'
+              ? 'pointer-events-auto visible opacity-100'
               : 'pointer-events-none invisible opacity-0'
           )}
         >
