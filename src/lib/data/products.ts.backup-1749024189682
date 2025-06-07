@@ -20,7 +20,7 @@ export const getProductsById = async function ({
         id: ids,
         region_id: regionId,
         fields:
-          '*variants,*variants.prices,*categories,+metadata',
+          '*variants.calculated_price,+variants.inventory_quantity,*variants,*variants.prices,*categories,+metadata',
       },
       { next: { tags: ['products'] } }
     )
@@ -37,7 +37,7 @@ export const getProductByHandle = async function (
         handle,
         region_id: regionId,
         fields:
-          '*variants,*variants.prices,*categories,+metadata',
+          '*variants.calculated_price,+variants.inventory_quantity,*variants,*variants.prices,*categories,+metadata',
       },
       { next: { tags: ['products'] } }
     )
@@ -76,7 +76,7 @@ export const getProductsList = async function ({
         offset,
         region_id: region.id,
         fields:
-          '+variants.inventory_quantity,*variants',
+          '*variants.calculated_price,+variants.inventory_quantity,*variants,*variants.prices',
         ...queryParams,
       },
       { next: { tags: ['products'] } }
@@ -136,7 +136,7 @@ export const getProductsListByCollectionId = async function ({
         collection_id: [collectionId],
         region_id: region.id,
         fields:
-          '+variants.inventory_quantity,*variants',
+          '*variants.calculated_price,+variants.inventory_quantity,*variants,*variants.prices',
       },
       { next: { tags: ['products'] } }
     )
