@@ -52,3 +52,23 @@ export const removeCartId = async () => {
   const cookieStore = await cookies()
   cookieStore.set('_medusa_cart_id', '', { maxAge: -1 })
 }
+
+export const getSessionId = async () => {
+  const cookieStore = await cookies()
+  return cookieStore.get('_medusa_session_id')?.value
+}
+
+export const setSessionId = async (sessionId: string) => {
+  const cookieStore = await cookies()
+  cookieStore.set('_medusa_session_id', sessionId, {
+    maxAge: 60 * 60 * 24 * 30, // 30 days
+    httpOnly: true,
+    sameSite: 'strict',
+    secure: process.env.NODE_ENV === 'production',
+  })
+}
+
+export const removeSessionId = async () => {
+  const cookieStore = await cookies()
+  cookieStore.set('_medusa_session_id', '', { maxAge: -1 })
+}

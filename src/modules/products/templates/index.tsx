@@ -1,6 +1,7 @@
 import { Suspense } from 'react'
 
 import { retrieveCart } from '@lib/data/cart'
+import { getCustomer } from '@lib/data/customer'
 import { getProductVariantsColors } from '@lib/data/fetch'
 import { getProductsListByCollectionId } from '@lib/data/products'
 import { HttpTypes } from '@medusajs/types'
@@ -8,6 +9,8 @@ import { Box } from '@modules/common/components/box'
 import { Container } from '@modules/common/components/container'
 import ImageGallery from '@modules/products/components/image-gallery'
 import ProductTabs from '@modules/products/components/product-tabs'
+import { ProductTracking } from '@modules/products/components/product-tracking'
+import { RecentlyViewed } from '@modules/products/components/recently-viewed'
 import ProductInfo from '@modules/products/templates/product-info'
 import SkeletonProductActions from '@modules/skeletons/components/skeleton-product-actions'
 import SkeletonProductsCarousel from '@modules/skeletons/templates/skeleton-products-carousel'
@@ -36,9 +39,16 @@ const ProductTemplate: React.FC<ProductTemplateProps> = async ({
   })
 
   const cart = await retrieveCart()
+  const customer = await getCustomer()
 
   return (
     <>
+      {/* Track product view */}
+      <ProductTracking 
+        product={product} 
+        customerId={customer?.id}
+      />
+      
       <Container
         className="relative flex flex-col gap-y-6 !py-8 small:gap-y-12"
         data-testid="product-container"
@@ -75,6 +85,14 @@ const ProductTemplate: React.FC<ProductTemplateProps> = async ({
           />
         </Suspense>
       )}
+
+      {/* Recently viewed products */}
+      <RecentlyViewed 
+        regionId={region.id}
+        currentProductId={product.id}
+        customerId={customer?.id}
+        limit={8}
+      />
     </>
   )
 }
