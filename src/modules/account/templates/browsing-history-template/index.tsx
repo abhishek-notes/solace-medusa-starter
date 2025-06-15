@@ -108,7 +108,7 @@ export default function BrowsingHistoryTemplate({
   return (
     <Container>
       <Box className="py-6">
-        <Heading level="h1" className="mb-6">
+        <Heading as="h1" className="mb-6">
           Browsing History
         </Heading>
 
