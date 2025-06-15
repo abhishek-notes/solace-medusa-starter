@@ -1,7 +1,5 @@
 'use server'
 
-import { HttpTypes } from '@medusajs/types'
-
 import { getAuthHeaders } from './cookies'
 
 // Simple fetch function for Medusa API calls

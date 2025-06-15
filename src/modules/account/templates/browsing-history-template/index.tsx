@@ -115,7 +115,7 @@ export default function BrowsingHistoryTemplate({
         {browsingHistory.length === 0 ? (
           <Box className="py-12 text-center">
             <Text className="mb-4 text-gray-500">
-              You haven't viewed any products yet.
+              You haven&apos;t viewed any products yet.
             </Text>
             <LocalizedClientLink
               href="/products"
