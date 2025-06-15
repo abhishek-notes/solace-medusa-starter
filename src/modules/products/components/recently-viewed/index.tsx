@@ -39,9 +39,9 @@ export function RecentlyViewed({
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const fetchRecentlyViewed = () => {
+    const fetchRecentlyViewed = async () => {
       try {
-        const history = getBrowsingHistoryFromStorage(limit + 1) // Get one extra in case we need to filter current product
+        const history = await getBrowsingHistoryFromStorage(limit + 1) // Get one extra in case we need to filter current product
 
         if (history.success && history.data) {
           // Filter out the current product if provided
