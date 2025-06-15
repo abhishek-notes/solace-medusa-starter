@@ -158,17 +158,38 @@ export const getProductsListByCollectionId = async function ({
 }
 
 export const getStoreFilters = async function () {
-  const filters: ProductFilters = await fetch(
-    `${BACKEND_URL}/store/filter-product-attributes`,
-    {
-      headers: {
-        'x-publishable-api-key': PUBLISHABLE_API_KEY!,
-      },
-      next: {
-        revalidate: 3600,
-      },
-    }
-  ).then((res) => res.json())
+  try {
+    const response = await fetch(
+      `${BACKEND_URL}/store/filter-product-attributes`,
+      {
+        headers: {
+          'x-publishable-api-key': PUBLISHABLE_API_KEY!,
+        },
+        next: {
+          revalidate: 3600,
+        },
+      }
+    )
 
-  return filters
+    if (!response.ok) {
+      console.error('Filter API error:', response.status, response.statusText)
+      // Return default empty filters if API fails
+      return {
+        collection: [],
+        type: [],
+        material: []
+      }
+    }
+
+    const filters: ProductFilters = await response.json()
+    return filters
+  } catch (error) {
+    console.error('Failed to fetch store filters:', error)
+    // Return default empty filters if fetch fails
+    return {
+      collection: [],
+      type: [],
+      material: []
+    }
+  }
 }
