@@ -83,7 +83,7 @@ export default function BrowsingHistoryTemplate({
     return (
       <Container>
         <Box className="py-6">
-          <Heading level="h1" className="mb-6">
+          <Heading as="h1" className="mb-6">
             Browsing History
           </Heading>
           <Text>Loading your browsing history...</Text>
@@ -96,7 +96,7 @@ export default function BrowsingHistoryTemplate({
     return (
       <Container>
         <Box className="py-6">
-          <Heading level="h1" className="mb-6">
+          <Heading as="h1" className="mb-6">
             Browsing History
           </Heading>
           <Text className="text-red-500">{error}</Text>
@@ -150,7 +150,7 @@ export default function BrowsingHistoryTemplate({
                     href={`/products/${item.product_handle}`}
                     className="hover:underline"
                   >
-                    <Heading level="h3" className="mb-1 text-lg font-medium">
+                    <Heading as="h3" className="mb-1 text-lg font-medium">
                       {item.product_title}
                     </Heading>
                   </LocalizedClientLink>
