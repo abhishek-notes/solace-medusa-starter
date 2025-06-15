@@ -25,18 +25,8 @@ module.exports = {
     'react-hooks/exhaustive-deps': 'warn',
     'testing-library/prefer-screen-queries': 'off',
     'unused-imports/no-unused-imports': 'warn',
-    'unused-imports/no-unused-vars': [
-      'warn',
-      {
-        vars: 'all',
-        varsIgnorePattern: '^_',
-        args: 'after-used',
-        argsIgnorePattern: '^_',
-        caughtErrors: 'none',
-        caughtErrorsIgnorePattern: '^_',
-        ignoreRestSiblings: true,
-      },
-    ],
+    'unused-imports/no-unused-vars': 'off',
+    '@next/next/no-img-element': 'off',
   },
   ignorePatterns: ['eslintrc.cjs'],
 }
