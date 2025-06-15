@@ -1,7 +1,5 @@
 'use client'
 
-import { useEffect } from 'react'
-
 import { useProductTracking } from '@lib/hooks/use-product-tracking'
 import { HttpTypes } from '@medusajs/types'
 

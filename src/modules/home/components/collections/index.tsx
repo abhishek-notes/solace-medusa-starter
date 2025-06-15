@@ -1,6 +1,7 @@
 'use client'
 
 import { useMemo } from 'react'
+import Image from 'next/image'
 
 import { cn } from '@lib/util/cn'
 import { processImageUrl } from '@lib/util/image-url'
@@ -25,10 +26,11 @@ const CollectionImage = ({ src, alt }: { src: string; alt: string }) => {
 
   return (
     <div className="relative h-full w-full">
-      <img
+      <Image
         src={src}
         alt={alt}
-        className="absolute inset-0 h-full w-full object-cover"
+        fill
+        className="object-cover"
         loading="lazy"
       />
     </div>

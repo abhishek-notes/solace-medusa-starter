@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 
 import { getBrowsingHistoryFromStorage } from '@lib/data/tracking'
 import { Box } from '@modules/common/components/box'
@@ -27,10 +28,8 @@ interface ViewedProduct {
 }
 
 export function RecentlyViewed({
-  regionId,
   countryCode,
   currentProductId,
-  customerId,
   limit = 8,
 }: RecentlyViewedProps) {
   const [recentlyViewedProducts, setRecentlyViewedProducts] = useState<
@@ -107,9 +106,11 @@ export function RecentlyViewed({
           >
             <div className="aspect-square overflow-hidden bg-gray-100">
               {product.product_thumbnail ? (
-                <img
+                <Image
                   src={product.product_thumbnail}
                   alt={product.product_title}
+                  width={300}
+                  height={300}
                   className="h-full w-full object-cover transition-transform duration-200 group-hover:scale-105"
                 />
               ) : (

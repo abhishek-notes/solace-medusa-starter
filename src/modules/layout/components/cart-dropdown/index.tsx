@@ -68,7 +68,7 @@ const CartDropdown = ({
 
       return () => clearTimeout(timer)
     }
-  }, [totalItems])
+  }, [totalItems, closeCartDropdown, isOpenCartDropdown])
 
   return (
     <Box
