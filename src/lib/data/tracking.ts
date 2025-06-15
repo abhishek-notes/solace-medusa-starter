@@ -9,7 +9,7 @@ async function medusaRequest(method: string, endpoint: string, options: any = {}
   const url = `${baseUrl}${endpoint}`
   
   // Hardcode the publishable key since env vars might not be available in server actions
-  const publishableKey = 'pk_502c40143c2694171e2551dbcb1ad58352a15df3c7b1590af7473b4af487b350'
+  const publishableKey = process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY || ''
   
   console.log('🔑 Using publishable key:', publishableKey ? 'Key present' : 'Key missing')
   console.log('🔑 Key starts with:', publishableKey.substring(0, 10) + '...')
