@@ -51,7 +51,7 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
       )
     case isManual(paymentSession?.provider_id):
       return (
-        <ManualTestPaymentButton notReady={false} data-testid={dataTestId} />
+        <ManualTestPaymentButton _notReady={false} data-testid={dataTestId} />
       )
     case isPaypal(paymentSession?.provider_id):
       return (
