@@ -86,6 +86,7 @@ const ProductTemplate: React.FC<ProductTemplateProps> = async ({
       {/* Recently viewed products */}
       <RecentlyViewed
         regionId={region.id}
+        countryCode={countryCode}
         currentProductId={product.id}
         customerId={customer?.id}
         limit={8}
