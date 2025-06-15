@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
     const trackingData = {
       ...data,
       session_id: sessionId,
-      ip_address: request.ip || request.headers.get('x-forwarded-for') || 'unknown',
+      ip_address: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown',
     }
     
     const result = await trackProductView(trackingData)
