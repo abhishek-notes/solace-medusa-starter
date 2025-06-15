@@ -10,7 +10,7 @@ import { Container } from '@modules/common/components/container'
 import { Heading } from '@modules/common/components/heading'
 
 interface RecentlyViewedProps {
-  regionId: string
+  regionId?: string
   countryCode: string
   currentProductId?: string
   customerId?: string
