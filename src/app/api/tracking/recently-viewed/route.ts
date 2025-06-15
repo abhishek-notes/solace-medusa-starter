@@ -1,19 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getSessionBrowsingHistory, getCustomerBrowsingHistory } from '@lib/data/tracking'
+
 import { getSessionId } from '@lib/data/cookies'
+import {
+  getCustomerBrowsingHistory,
+  getSessionBrowsingHistory,
+} from '@lib/data/tracking'
 
 export async function POST(request: NextRequest) {
   try {
     const { customerId, currentProductId, limit } = await request.json()
-    
+
     let result
-    
+
     if (customerId) {
       // Get browsing history for logged-in customer
       result = await getCustomerBrowsingHistory(customerId, {
         limit: limit || 10,
         offset: 0,
-        order: "DESC"
+        order: 'DESC',
       })
     } else {
       // Get browsing history for anonymous session
@@ -21,16 +25,16 @@ export async function POST(request: NextRequest) {
       if (!sessionId) {
         return NextResponse.json({
           success: true,
-          data: []
+          data: [],
         })
       }
-      
+
       result = await getSessionBrowsingHistory(sessionId, {
         limit: limit || 10,
-        offset: 0
+        offset: 0,
       })
     }
-    
+
     if (result.success && result.data) {
       // Filter out current product and transform data for frontend
       const filteredData = result.data
@@ -42,20 +46,19 @@ export async function POST(request: NextRequest) {
           thumbnail: item.product_thumbnail || '/placeholder.jpg',
           created_at: item.viewed_at,
           calculatedPrice: '$0.00', // This would need to be fetched from product data
-          salePrice: '$0.00' // This would need to be fetched from product data
+          salePrice: '$0.00', // This would need to be fetched from product data
         }))
-      
+
       return NextResponse.json({
         success: true,
-        data: filteredData
+        data: filteredData,
       })
     }
-    
+
     return NextResponse.json({
       success: true,
-      data: []
+      data: [],
     })
-    
   } catch (error) {
     console.error('Error fetching recently viewed products:', error)
     return NextResponse.json(

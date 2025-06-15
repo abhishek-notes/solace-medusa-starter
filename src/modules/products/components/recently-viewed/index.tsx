@@ -1,7 +1,8 @@
-"use client"
+'use client'
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+
 import { getBrowsingHistoryFromStorage } from '@lib/data/tracking'
 import { Box } from '@modules/common/components/box'
 import { Container } from '@modules/common/components/container'
@@ -25,27 +26,31 @@ interface ViewedProduct {
   session_id: string
 }
 
-export function RecentlyViewed({ 
-  regionId, 
+export function RecentlyViewed({
+  regionId,
   countryCode,
-  currentProductId, 
+  currentProductId,
   customerId,
-  limit = 8 
+  limit = 8,
 }: RecentlyViewedProps) {
-  const [recentlyViewedProducts, setRecentlyViewedProducts] = useState<ViewedProduct[]>([])
+  const [recentlyViewedProducts, setRecentlyViewedProducts] = useState<
+    ViewedProduct[]
+  >([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const fetchRecentlyViewed = () => {
       try {
         const history = getBrowsingHistoryFromStorage(limit + 1) // Get one extra in case we need to filter current product
-        
+
         if (history.success && history.data) {
           // Filter out the current product if provided
-          const filteredData = currentProductId 
-            ? history.data.filter((item: ViewedProduct) => item.product_id !== currentProductId)
+          const filteredData = currentProductId
+            ? history.data.filter(
+                (item: ViewedProduct) => item.product_id !== currentProductId
+              )
             : history.data
-          
+
           setRecentlyViewedProducts(filteredData.slice(0, limit))
         }
       } catch (error) {
@@ -63,13 +68,16 @@ export function RecentlyViewed({
     }
 
     window.addEventListener('storage', handleStorageChange)
-    
+
     // Also listen for custom event when localStorage is updated from the same page
     window.addEventListener('browsing-history-updated', handleStorageChange)
 
     return () => {
       window.removeEventListener('storage', handleStorageChange)
-      window.removeEventListener('browsing-history-updated', handleStorageChange)
+      window.removeEventListener(
+        'browsing-history-updated',
+        handleStorageChange
+      )
     }
   }, [currentProductId, limit])
 
@@ -79,13 +87,13 @@ export function RecentlyViewed({
 
   return (
     <Container className="py-12">
-      <Box className="mb-8 flex justify-between items-center">
+      <Box className="mb-8 flex items-center justify-between">
         <Heading as="h2" className="text-2xl font-medium text-basic-primary">
           Recently Viewed
         </Heading>
-        <Link 
+        <Link
           href={`/${countryCode}/account/browsing-history`}
-          className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
+          className="text-sm text-gray-600 transition-colors hover:text-gray-900"
         >
           View All
         </Link>
@@ -95,23 +103,25 @@ export function RecentlyViewed({
           <Link
             key={product.id}
             href={`/${countryCode}/products/${product.product_handle}`}
-            className="group block bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+            className="group block overflow-hidden rounded-lg bg-white shadow-sm transition-shadow hover:shadow-md"
           >
-            <div className="aspect-square bg-gray-100 overflow-hidden">
+            <div className="aspect-square overflow-hidden bg-gray-100">
               {product.product_thumbnail ? (
                 <img
                   src={product.product_thumbnail}
                   alt={product.product_title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+                  className="h-full w-full object-cover transition-transform duration-200 group-hover:scale-105"
                 />
               ) : (
-                <div className="w-full h-full flex items-center justify-center bg-gray-200">
-                  <span className="text-gray-500 text-xs text-center">No Image</span>
+                <div className="flex h-full w-full items-center justify-center bg-gray-200">
+                  <span className="text-xs text-center text-gray-500">
+                    No Image
+                  </span>
                 </div>
               )}
             </div>
             <div className="p-4">
-              <h3 className="font-medium text-sm group-hover:text-gray-600 transition-colors line-clamp-2 mb-2">
+              <h3 className="mb-2 line-clamp-2 text-sm font-medium transition-colors group-hover:text-gray-600">
                 {product.product_title}
               </h3>
               <p className="text-xs text-gray-500">

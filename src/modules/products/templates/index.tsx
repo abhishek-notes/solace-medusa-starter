@@ -44,11 +44,8 @@ const ProductTemplate: React.FC<ProductTemplateProps> = async ({
   return (
     <>
       {/* Track product view */}
-      <ProductTracking 
-        product={product} 
-        customerId={customer?.id}
-      />
-      
+      <ProductTracking product={product} customerId={customer?.id} />
+
       <Container
         className="relative flex flex-col gap-y-6 !py-8 small:gap-y-12"
         data-testid="product-container"
@@ -87,7 +84,7 @@ const ProductTemplate: React.FC<ProductTemplateProps> = async ({
       )}
 
       {/* Recently viewed products */}
-      <RecentlyViewed 
+      <RecentlyViewed
         regionId={region.id}
         currentProductId={product.id}
         customerId={customer?.id}

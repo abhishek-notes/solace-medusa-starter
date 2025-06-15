@@ -25,10 +25,10 @@ export const getPricesForVariant = (variant: any) => {
       ),
     }
   }
-  
+
   // Fallback to raw prices if calculated_price not available
   if (variant?.prices?.[0]) {
-    const price = variant.prices[0];
+    const price = variant.prices[0]
     return {
       calculated_price_number: price.amount,
       calculated_price: convertToLocale({
@@ -45,7 +45,7 @@ export const getPricesForVariant = (variant: any) => {
       percentage_diff: 0,
     }
   }
-  
+
   return null
 }
 
@@ -74,13 +74,13 @@ export function getProductPrice({
           b.calculated_price.calculated_amount
         )
       })[0]
-    
+
     // Fallback to variants with prices if no calculated_price
     if (!cheapestVariant) {
       cheapestVariant = product.variants
         .filter((v: any) => !!v.prices?.[0])
         .sort((a: any, b: any) => {
-          return (a.prices[0].amount - b.prices[0].amount)
+          return a.prices[0].amount - b.prices[0].amount
         })[0]
     }
 

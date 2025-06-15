@@ -1,12 +1,13 @@
-"use client"
+'use client'
 
 import { useEffect, useState } from 'react'
+
 import { HttpTypes } from '@medusajs/types'
 import { Box } from '@modules/common/components/box'
 import { Container } from '@modules/common/components/container'
 import { Heading } from '@modules/common/components/heading'
-import { Text } from '@modules/common/components/text'
 import LocalizedClientLink from '@modules/common/components/localized-client-link'
+import { Text } from '@modules/common/components/text'
 
 interface BrowsingHistoryItem {
   id: string
@@ -26,8 +27,12 @@ interface BrowsingHistoryTemplateProps {
   customer: HttpTypes.StoreCustomer
 }
 
-export default function BrowsingHistoryTemplate({ customer }: BrowsingHistoryTemplateProps) {
-  const [browsingHistory, setBrowsingHistory] = useState<BrowsingHistoryItem[]>([])
+export default function BrowsingHistoryTemplate({
+  customer,
+}: BrowsingHistoryTemplateProps) {
+  const [browsingHistory, setBrowsingHistory] = useState<BrowsingHistoryItem[]>(
+    []
+  )
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -106,15 +111,15 @@ export default function BrowsingHistoryTemplate({ customer }: BrowsingHistoryTem
         <Heading level="h1" className="mb-6">
           Browsing History
         </Heading>
-        
+
         {browsingHistory.length === 0 ? (
-          <Box className="text-center py-12">
-            <Text className="text-gray-500 mb-4">
+          <Box className="py-12 text-center">
+            <Text className="mb-4 text-gray-500">
               You haven't viewed any products yet.
             </Text>
             <LocalizedClientLink
               href="/products"
-              className="inline-block bg-black text-white px-6 py-3 rounded-md hover:bg-gray-800 transition-colors"
+              className="inline-block rounded-md bg-black px-6 py-3 text-white transition-colors hover:bg-gray-800"
             >
               Browse Products
             </LocalizedClientLink>
@@ -124,43 +129,43 @@ export default function BrowsingHistoryTemplate({ customer }: BrowsingHistoryTem
             {browsingHistory.map((item) => (
               <Box
                 key={`${item.product_id}-${item.viewed_at}`}
-                className="flex items-center gap-4 p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow"
+                className="flex items-center gap-4 rounded-lg border border-gray-200 p-4 transition-shadow hover:shadow-md"
               >
-                <Box className="relative w-16 h-16 flex-shrink-0">
+                <Box className="relative h-16 w-16 flex-shrink-0">
                   {item.product_thumbnail ? (
                     <img
                       src={item.product_thumbnail}
                       alt={item.product_title}
-                      className="w-full h-full object-cover rounded"
+                      className="h-full w-full rounded object-cover"
                     />
                   ) : (
-                    <Box className="w-full h-full bg-gray-200 rounded flex items-center justify-center">
+                    <Box className="flex h-full w-full items-center justify-center rounded bg-gray-200">
                       <Text className="text-xs text-gray-500">No image</Text>
                     </Box>
                   )}
                 </Box>
-                
+
                 <Box className="flex-grow">
                   <LocalizedClientLink
                     href={`/products/${item.product_handle}`}
                     className="hover:underline"
                   >
-                    <Heading level="h3" className="text-lg font-medium mb-1">
+                    <Heading level="h3" className="mb-1 text-lg font-medium">
                       {item.product_title}
                     </Heading>
                   </LocalizedClientLink>
-                  
+
                   {item.variant_title && (
-                    <Text className="text-sm text-gray-600 mb-1">
+                    <Text className="mb-1 text-sm text-gray-600">
                       Variant: {item.variant_title}
                     </Text>
                   )}
-                  
+
                   <Text className="text-sm text-gray-500">
                     Viewed on {formatDate(item.viewed_at)}
                   </Text>
-                  
-                  <Box className="flex gap-4 mt-2 text-xs text-gray-400">
+
+                  <Box className="text-xs mt-2 flex gap-4 text-gray-400">
                     {item.device_type && (
                       <Text>Device: {item.device_type}</Text>
                     )}
@@ -169,11 +174,11 @@ export default function BrowsingHistoryTemplate({ customer }: BrowsingHistoryTem
                     )}
                   </Box>
                 </Box>
-                
+
                 <Box className="flex-shrink-0">
                   <LocalizedClientLink
                     href={`/products/${item.product_handle}`}
-                    className="inline-block bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded text-sm transition-colors"
+                    className="inline-block rounded bg-gray-100 px-4 py-2 text-sm transition-colors hover:bg-gray-200"
                   >
                     View Product
                   </LocalizedClientLink>

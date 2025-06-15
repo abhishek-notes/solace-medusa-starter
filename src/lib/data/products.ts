@@ -19,8 +19,7 @@ export const getProductsById = async function ({
       {
         id: ids,
         region_id: regionId,
-        fields:
-          '*variants,*variants.prices,*categories,+metadata',
+        fields: '*variants,*variants.prices,*categories,+metadata',
       },
       { next: { tags: ['products'] } }
     )
@@ -36,8 +35,7 @@ export const getProductByHandle = async function (
       {
         handle,
         region_id: regionId,
-        fields:
-          '*variants,*variants.prices,*categories,+metadata',
+        fields: '*variants,*variants.prices,*categories,+metadata',
       },
       { next: { tags: ['products'] } }
     )
@@ -75,8 +73,7 @@ export const getProductsList = async function ({
         limit,
         offset,
         region_id: region.id,
-        fields:
-          '+variants.inventory_quantity,*variants',
+        fields: '+variants.inventory_quantity,*variants',
         ...queryParams,
       },
       { next: { tags: ['products'] } }
@@ -135,8 +132,7 @@ export const getProductsListByCollectionId = async function ({
         offset,
         collection_id: [collectionId],
         region_id: region.id,
-        fields:
-          '+variants.inventory_quantity,*variants',
+        fields: '+variants.inventory_quantity,*variants',
       },
       { next: { tags: ['products'] } }
     )
@@ -177,7 +173,7 @@ export const getStoreFilters = async function () {
       return {
         collection: [],
         type: [],
-        material: []
+        material: [],
       }
     }
 
@@ -189,7 +185,7 @@ export const getStoreFilters = async function () {
     return {
       collection: [],
       type: [],
-      material: []
+      material: [],
     }
   }
 }

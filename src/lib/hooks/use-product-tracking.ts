@@ -1,6 +1,7 @@
-"use client"
+'use client'
 
 import { useEffect } from 'react'
+
 import { HttpTypes } from '@medusajs/types'
 
 interface UseProductTrackingProps {
@@ -8,7 +9,10 @@ interface UseProductTrackingProps {
   customerId?: string
 }
 
-export function useProductTracking({ product, customerId }: UseProductTrackingProps) {
+export function useProductTracking({
+  product,
+  customerId,
+}: UseProductTrackingProps) {
   useEffect(() => {
     const trackView = async () => {
       // Generate or get session ID from localStorage for anonymous users
@@ -19,8 +23,11 @@ export function useProductTracking({ product, customerId }: UseProductTrackingPr
       }
 
       // Get device and browser info
-      const deviceType = /Mobi|Android/i.test(navigator.userAgent) ? 'mobile' : 'desktop'
-      const browser = navigator.userAgent.split(' ').pop()?.split('/')[0] || 'unknown'
+      const deviceType = /Mobi|Android/i.test(navigator.userAgent)
+        ? 'mobile'
+        : 'desktop'
+      const browser =
+        navigator.userAgent.split(' ').pop()?.split('/')[0] || 'unknown'
 
       const trackingData = {
         product_id: product.id,
@@ -37,7 +44,7 @@ export function useProductTracking({ product, customerId }: UseProductTrackingPr
           product_type: product.type?.value,
           page_url: window.location.href,
           timestamp: new Date().toISOString(),
-        }
+        },
       }
 
       try {
@@ -61,5 +68,13 @@ export function useProductTracking({ product, customerId }: UseProductTrackingPr
     const timeoutId = setTimeout(trackView, 1000)
 
     return () => clearTimeout(timeoutId)
-  }, [product.id, product.handle, product.title, product.thumbnail, product.collection_id, product.type?.value, customerId])
+  }, [
+    product.id,
+    product.handle,
+    product.title,
+    product.thumbnail,
+    product.collection_id,
+    product.type?.value,
+    customerId,
+  ])
 }
