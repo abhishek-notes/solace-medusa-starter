@@ -3,7 +3,7 @@ import { Metadata } from 'next'
 import LoginTemplate from '@modules/account/templates/login-template'
 
 export const metadata: Metadata = {
-  title: 'Sign in - Palladio Jewellers',
+  title: 'Sign in',
   description: 'Sign in to your Palladio Jewellers account.',
 }
 

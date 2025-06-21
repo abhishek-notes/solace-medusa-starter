@@ -8,7 +8,7 @@ import { NumericalSection } from '@modules/content/components/numerical-section'
 import { ExploreBlog } from '@modules/home/components/explore-blog'
 
 export const metadata: Metadata = {
-  title: 'About Us - Palladio Jewellers',
+  title: 'About Us',
   description:
     'At Palladio Jewellers, we craft exquisite jewelry with passion and precision. Discover our story of excellence in fine jewelry making.',
 }
