@@ -1,7 +1,7 @@
 import Image from 'next/image'
 
 import { Container } from '@modules/common/components/container'
-import { SolaceLogoBig } from '@modules/common/icons'
+import { PalladioJewellersLogo } from '@modules/common/icons'
 import { StrapiPhotoAttributes } from 'types/strapi'
 
 export const Banner = ({ data }: { data: StrapiPhotoAttributes[] }) => {
@@ -23,7 +23,7 @@ export const Banner = ({ data }: { data: StrapiPhotoAttributes[] }) => {
           className="h-auto w-full dark:invert"
         />
       ) : (
-        <SolaceLogoBig className="h-auto w-full" />
+        <PalladioJewellersLogo className="h-auto w-full" />
       )}
     </Container>
   )

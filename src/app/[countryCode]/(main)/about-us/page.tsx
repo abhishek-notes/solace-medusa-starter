@@ -8,9 +8,9 @@ import { NumericalSection } from '@modules/content/components/numerical-section'
 import { ExploreBlog } from '@modules/home/components/explore-blog'
 
 export const metadata: Metadata = {
-  title: 'About Us',
+  title: 'About Us - Palladio Jewellers',
   description:
-    'At Solace, we deliver innovative products designed to meet your needs with quality and care.',
+    'At Palladio Jewellers, we craft exquisite jewelry with passion and precision. Discover our story of excellence in fine jewelry making.',
 }
 
 export default async function AboutUsPage() {

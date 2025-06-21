@@ -1,9 +1,11 @@
 {
-  "name": "solace-medusa-starter",
+  "name": "palladio-jewellers",
   "version": "0.0.1",
-  "description": "Solace Medusa Starter to be used with Medusa server",
+  "description": "Palladio Jewellers E-commerce Website",
   "keywords": [
-    "solace-medusa-starter"
+    "palladio-jewellers",
+    "jewelry",
+    "e-commerce"
   ],
   "scripts": {
     "dev": "next dev --turbopack -p 8000",

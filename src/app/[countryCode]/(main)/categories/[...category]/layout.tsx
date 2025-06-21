@@ -57,7 +57,7 @@ export async function generateMetadata(
       `${title} category.`
 
     return {
-      title: `${title} | Solace Medusa Starter`,
+      title: `${title} | Palladio Jewellers`,
       description,
       alternates: {
         canonical: `${params.category.join('/')}`,

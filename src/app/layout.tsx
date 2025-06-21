@@ -9,6 +9,11 @@ import 'styles/globals.css'
 
 export const metadata: Metadata = {
   metadataBase: new URL(getBaseURL()),
+  title: {
+    default: 'Palladio Jewellers',
+    template: '%s | Palladio Jewellers',
+  },
+  description: 'Discover exquisite jewelry at Palladio Jewellers. Browse our collection of fine jewelry, engagement rings, and luxury accessories.',
 }
 
 export default function RootLayout(props: { children: React.ReactNode }) {

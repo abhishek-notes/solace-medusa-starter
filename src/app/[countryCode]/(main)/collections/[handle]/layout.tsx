@@ -59,7 +59,7 @@ export async function generateMetadata(
   }
 
   const metadata = {
-    title: `${collection.title} | Solace Medusa Starter`,
+    title: `${collection.title} | Palladio Jewellers`,
     description: `${collection.title} collection`,
   } as Metadata
 

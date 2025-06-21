@@ -18,9 +18,9 @@ import { ProductCarousel } from '@modules/products/components/product-carousel'
 import SkeletonProductsCarousel from '@modules/skeletons/templates/skeleton-products-carousel'
 
 export const metadata: Metadata = {
-  title: 'Solace Medusa Starter Template',
+  title: 'Palladio Jewellers',
   description:
-    'A performant frontend ecommerce starter template with Next.js 14 and Medusa 2.0.',
+    'Discover exquisite jewelry at Palladio Jewellers. Browse our collection of fine jewelry, engagement rings, and luxury accessories.',
 }
 
 export default async function Home(props: {
