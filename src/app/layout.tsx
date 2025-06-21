@@ -14,6 +14,11 @@ export const metadata: Metadata = {
     template: '%s | Palladio Jewellers',
   },
   description: 'Discover exquisite jewelry at Palladio Jewellers. Browse our collection of fine jewelry, engagement rings, and luxury accessories.',
+  icons: {
+    icon: '/favicon.ico',
+    apple: '/apple-touch-icon.png',
+  },
+  manifest: '/site.webmanifest',
 }
 
 export default function RootLayout(props: { children: React.ReactNode }) {

@@ -18,7 +18,6 @@ import { ProductCarousel } from '@modules/products/components/product-carousel'
 import SkeletonProductsCarousel from '@modules/skeletons/templates/skeleton-products-carousel'
 
 export const metadata: Metadata = {
-  title: 'Palladio Jewellers',
   description:
     'Discover exquisite jewelry at Palladio Jewellers. Browse our collection of fine jewelry, engagement rings, and luxury accessories.',
 }
