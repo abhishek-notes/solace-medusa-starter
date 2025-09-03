@@ -74,10 +74,11 @@ export async function signup(_currentState: unknown, formData: FormData) {
     await setAuthToken(loginToken as string)
 
     revalidateTag('customer')
-    return createdCustomer
+    // return createdCustomer
   } catch (error: any) {
     return error.toString()
   }
+  redirect('/')
 }
 
 export async function forgotPassword(
