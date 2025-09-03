@@ -68,24 +68,10 @@ export async function search({
     })
   }
 
+  // Send selected price bands as an array; backend will handle OR logic
   if (price && Array.isArray(price)) {
-    price.forEach((range) => {
-      switch (range) {
-        case 'under-100':
-          searchParams.append('price_to', '100')
-          break
-        case '100-500':
-          searchParams.append('price_from', '100')
-          searchParams.append('price_to', '500')
-          break
-        case '501-1000':
-          searchParams.append('price_from', '501')
-          searchParams.append('price_to', '1000')
-          break
-        case 'more-than-1000':
-          searchParams.append('price_from', '1000')
-          break
-      }
+    price.forEach((band) => {
+      searchParams.append('price[]', band)
     })
   }
 

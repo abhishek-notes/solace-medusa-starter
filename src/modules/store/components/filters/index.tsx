@@ -41,10 +41,8 @@ export default function ProductFilters({
     value: material.value,
   }))
 
-  const priceOptions = PRICING_OPTIONS.map((po) => ({
-    ...po,
-    disabled: currentPrice !== null && currentPrice !== po.id,
-  }))
+  // Allow multi-selection for price; do not disable other options
+  const priceOptions = PRICING_OPTIONS.map((po) => ({ ...po }))
 
   return (
     <>
