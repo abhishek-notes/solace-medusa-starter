@@ -21,16 +21,23 @@ async function medusaRequest(
   )
   console.log('🔑 Key starts with:', publishableKey.substring(0, 10) + '...')
 
-  const headers = {
+  // Merge headers without allowing options.headers to overwrite base headers
+  const baseHeaders = {
     'x-publishable-api-key': publishableKey,
     'Content-Type': 'application/json',
-    ...options.headers,
+  } as Record<string, any>
+
+  const mergedHeaders = {
+    ...baseHeaders,
+    ...(options.headers || {}),
   }
+
+  const { headers: _ignoredHeaders, ...restOptions } = options || {}
 
   const config = {
     method,
-    headers,
-    ...options,
+    headers: mergedHeaders,
+    ...restOptions,
   }
 
   console.log('📡 Making request to:', url)
@@ -168,19 +175,30 @@ export async function getCustomerBrowsingHistory(
     order?: 'ASC' | 'DESC'
   }
 ): Promise<BrowsingHistoryResponse> {
-  const params = new URLSearchParams({
-    type: 'customer',
-    customer_id: customerId,
-    limit: (options?.limit || 50).toString(),
-    offset: (options?.offset || 0).toString(),
-  })
+  // Use implemented backend route: /store/browsing-history/:customer_id
+  const params = new URLSearchParams()
+  if (options?.limit) params.set('limit', String(options.limit))
+  if (options?.offset) params.set('offset', String(options.offset))
 
   try {
-    const response = await medusaRequest('GET', `/browsing-history?${params}`, {
-      headers: await getAuthHeaders(),
-    })
+    const { response, body } = await medusaRequest(
+      'GET',
+      `/store/browsing-history/${customerId}${params.toString() ? `?${params}` : ''}`,
+      {
+        headers: await getAuthHeaders(),
+      }
+    )
 
-    return response.body
+    if (!response.ok) {
+      return {
+        success: false,
+        error: body?.error || `Request failed with status ${response.status}`,
+      }
+    }
+
+    // Normalize to { success, data } for consumers
+    const data = body?.browsing_history || body?.data || []
+    return { success: true, data }
   } catch (error: any) {
     return {
       success: false,
