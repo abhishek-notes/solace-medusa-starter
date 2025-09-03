@@ -74,11 +74,17 @@ export async function signup(_currentState: unknown, formData: FormData) {
     await setAuthToken(loginToken as string)
 
     revalidateTag('customer')
-    // return createdCustomer
   } catch (error: any) {
     return error.toString()
   }
-  redirect('/')
+  const requested = (formData.get('return_to') as string) || '/'
+  const isSafe =
+    typeof requested === 'string' &&
+    requested.startsWith('/') &&
+    !requested.startsWith('//') &&
+    !requested.includes('http://') &&
+    !requested.includes('https://')
+  redirect(isSafe ? requested : '/')
 }
 
 export async function forgotPassword(
@@ -147,6 +153,14 @@ export async function login(_currentState: unknown, formData: FormData) {
   } catch (error: any) {
     return error.toString()
   }
+  const requested = (formData.get('return_to') as string) || '/'
+  const isSafe =
+    typeof requested === 'string' &&
+    requested.startsWith('/') &&
+    !requested.startsWith('//') &&
+    !requested.includes('http://') &&
+    !requested.includes('https://')
+  redirect(isSafe ? requested : '/')
 }
 
 export async function signout(countryCode: string) {

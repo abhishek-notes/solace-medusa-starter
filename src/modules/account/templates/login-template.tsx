@@ -23,11 +23,15 @@ const LoginTemplate = () => {
 
   useEffect(() => {
     if (mode) {
-      const newUrl = `/account`
+      // Preserve existing query params (e.g., return_to) while removing mode
+      const params = new URLSearchParams(searchParams.toString())
+      params.delete('mode')
+      const qs = params.toString()
+      const newUrl = `/account${qs ? `?${qs}` : ''}`
       setCurrentView(mode)
       router.replace(newUrl)
     }
-  }, [mode, router])
+  }, [mode, router, searchParams])
 
   let Component = Login
   switch (currentView) {

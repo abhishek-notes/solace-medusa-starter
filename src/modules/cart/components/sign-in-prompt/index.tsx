@@ -1,7 +1,14 @@
+"use client"
+
 import { Button, Heading, Text } from '@medusajs/ui'
+import { usePathname, useSearchParams } from 'next/navigation'
 import LocalizedClientLink from '@modules/common/components/localized-client-link'
 
 const SignInPrompt = () => {
+  const pathname = usePathname()
+  const search = useSearchParams()
+  const current = `${pathname}${search?.toString() ? `?${search.toString()}` : ''}`
+  const returnTo = encodeURIComponent(current)
   return (
     <div className="flex items-center justify-between bg-white">
       <div>
@@ -13,7 +20,7 @@ const SignInPrompt = () => {
         </Text>
       </div>
       <div>
-        <LocalizedClientLink href="/account">
+        <LocalizedClientLink href={`/account?mode=sign-in&return_to=${returnTo}`}>
           <Button
             variant="secondary"
             className="h-10"

@@ -1,7 +1,7 @@
 'use client'
 
 import React, { Fragment, useState } from 'react'
-import { useParams } from 'next/navigation'
+import { useParams, usePathname, useSearchParams } from 'next/navigation'
 
 import { Popover, Transition } from '@headlessui/react'
 import { signout } from '@lib/data/customer'
@@ -22,6 +22,10 @@ const ProfileDropdown = ({ loggedIn }: { loggedIn: boolean }) => {
   const close = () => setCartDropdownOpen(false)
 
   const { countryCode } = useParams()
+  const pathname = usePathname()
+  const search = useSearchParams()
+  const current = `${pathname}${search?.toString() ? `?${search.toString()}` : ''}`
+  const returnTo = encodeURIComponent(current)
 
   const handleLogout = async () => {
     await signout(countryCode as string)
@@ -88,12 +92,12 @@ const ProfileDropdown = ({ loggedIn }: { loggedIn: boolean }) => {
                   data-testid="profile-dropdown-sign-in-up"
                 >
                   <Button size="sm" asChild>
-                    <LocalizedClientLink href="/account?mode=sign-in">
+                    <LocalizedClientLink href={`/account?mode=sign-in&return_to=${returnTo}`}>
                       Sign in
                     </LocalizedClientLink>
                   </Button>
                   <Button size="sm" asChild variant="tonal">
-                    <LocalizedClientLink href="/account?mode=register">
+                    <LocalizedClientLink href={`/account?mode=register&return_to=${returnTo}`}>
                       Sign up
                     </LocalizedClientLink>
                   </Button>

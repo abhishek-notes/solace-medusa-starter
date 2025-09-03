@@ -1,4 +1,5 @@
 import { startTransition, useActionState, useEffect, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 
 import { login } from '@lib/data/customer'
 import { ValidationError } from '@lib/util/validator'
@@ -17,6 +18,7 @@ type Props = {
 }
 
 const Login = ({ setCurrentView }: Props) => {
+  const searchParams = useSearchParams()
   const [message, formAction] = useActionState(login, null)
   const [localMessage, setLocalMessage] = useState(null)
   const [validationErrors, setValidationErrors] = useState<ValidationError[]>(
@@ -83,6 +85,15 @@ const Login = ({ setCurrentView }: Props) => {
           Log in
         </Heading>
         <form onSubmit={handleSubmit}>
+          {/* Preserve return path if present */}
+          {searchParams?.get('return_to') && (
+            <input
+              type="hidden"
+              name="return_to"
+              value={searchParams.get('return_to') as string}
+              readOnly
+            />
+          )}
           <div className="flex flex-col gap-y-4">
             <Input
               label="Email"

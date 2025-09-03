@@ -19,6 +19,7 @@ import { toast } from '@modules/common/components/toast'
 import { CheckCircleIcon, XCircleIcon } from '@modules/common/icons'
 
 import LoginPrompt from './login-prompt'
+import { useSearchParams } from 'next/navigation'
 
 type Props = {
   setCurrentView: (view: LOGIN_VIEW) => void
@@ -31,6 +32,7 @@ const Register = ({ setCurrentView }: Props) => {
   const [validationErrors, setValidationErrors] = useState<ValidationError[]>(
     []
   )
+  const searchParams = useSearchParams()
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -117,6 +119,15 @@ const Register = ({ setCurrentView }: Props) => {
           Create account
         </Heading>
         <form className="flex w-full flex-col" onSubmit={handleSubmit}>
+          {/* Preserve return path if present */}
+          {searchParams?.get('return_to') && (
+            <input
+              type="hidden"
+              name="return_to"
+              value={searchParams.get('return_to') as string}
+              readOnly
+            />
+          )}
           <Box className="flex w-full flex-col gap-y-4">
             <Box className="grid grid-cols-1 gap-4 small:grid-cols-2">
               <Input
