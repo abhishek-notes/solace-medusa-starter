@@ -24,9 +24,10 @@ export default async function Orders(props: Props) {
   const { page } = searchParams
   const currentPage = page ? parseInt(page) : 1
 
+  // listOrders signature is (limit, offset). We must pass limit first, then offset.
   const orders = await listOrders(
-    (currentPage - 1) * ORDERS_LIMIT,
-    ORDERS_LIMIT
+    ORDERS_LIMIT,
+    (currentPage - 1) * ORDERS_LIMIT
   )
 
   if (!orders) {
