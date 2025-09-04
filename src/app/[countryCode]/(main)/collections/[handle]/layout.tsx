@@ -12,72 +12,76 @@ import { Container } from '@modules/common/components/container'
 import { Heading } from '@modules/common/components/heading'
 import StoreBreadcrumbs from '@modules/store/templates/breadcrumbs'
 
+export const revalidate = 300 // ISR for metadata/regions where possible
+
 interface CollectionPageLayoutProps {
   children: React.ReactNode
   params: Promise<{ handle: string; countryCode: string }>
 }
 
 export async function generateStaticParams() {
-  const { collections } = await getCollectionsList()
+  try {
+    const { collections } = await getCollectionsList()
+    if (!collections?.length) return []
 
-  if (!collections) {
+    const countryCodes = await listRegions().then(
+      (regions: StoreRegion[]) =>
+        regions
+          ?.map((r) => r.countries?.map((c) => c.iso_2))
+          .flat()
+          .filter(Boolean) as string[]
+    )
+
+    const collectionHandles = collections.map((c: StoreCollection) => c.handle)
+    return countryCodes
+      ?.map((countryCode: string) =>
+        collectionHandles.map((handle: string | undefined) => ({
+          countryCode,
+          handle,
+        }))
+      )
+      .flat()
+  } catch (e) {
+    console.warn('[generateStaticParams] upstream unavailable; returning []')
     return []
   }
-
-  const countryCodes = await listRegions().then(
-    (regions: StoreRegion[]) =>
-      regions
-        ?.map((r) => r.countries?.map((c) => c.iso_2))
-        .flat()
-        .filter(Boolean) as string[]
-  )
-
-  const collectionHandles = collections.map(
-    (collection: StoreCollection) => collection.handle
-  )
-
-  const staticParams = countryCodes
-    ?.map((countryCode: string) =>
-      collectionHandles.map((handle: string | undefined) => ({
-        countryCode,
-        handle,
-      }))
-    )
-    .flat()
-
-  return staticParams
 }
 
 export async function generateMetadata(
   props: CollectionPageLayoutProps
 ): Promise<Metadata> {
   const params = await props.params
-  const collection = await getCollectionByHandle(params.handle)
-
-  if (!collection) {
-    notFound()
+  try {
+    const collection = await getCollectionByHandle(params.handle)
+    if (!collection) notFound()
+    return {
+      title: collection.title,
+      description: `${collection.title} collection`,
+    }
+  } catch (e) {
+    // Fall back to generic metadata rather than failing the build
+    return {
+      title: 'Collection',
+      description: 'Browse our collection',
+    }
   }
-
-  const metadata = {
-    title: collection.title,
-    description: `${collection.title} collection`,
-  } as Metadata
-
-  return metadata
 }
 
 export default async function CollectionPageLayout(
   props: CollectionPageLayoutProps
 ) {
   const params = await props.params
-
-  const { handle } = params
-
   const { children } = props
 
-  const currentCollection = await getCollectionByHandle(handle).then(
-    (collection: StoreCollection) => collection
-  )
+  // Render UI even if upstream is briefly down
+  let currentCollection: StoreCollection | null = null
+  try {
+    currentCollection = await getCollectionByHandle(params.handle).then(
+      (c) => c as StoreCollection
+    )
+  } catch (e) {
+    // soft-fallback; you can choose to notFound() if this is truly critical
+  }
 
   return (
     <>
